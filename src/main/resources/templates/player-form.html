@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Adaugă jucător</title>
+</head>
+<body>
+
+<h2>Adaugă jucător nou</h2>
+
+<form th:action="@{/admin/players/save}"
+      th:object="${player}"
+      method="post">
+
+    <div>
+        <label>Nume:</label>
+        <input type="text" th:field="*{nume}" required/>
+    </div>
+
+    <div>
+        <label>Prenume:</label>
+        <input type="text" th:field="*{prenume}" required/>
+    </div>
+
+    <div>
+        <label>Echipă:</label>
+        <input type="text" th:field="*{echipa}" required/>
+    </div>
+
+    <div>
+        <label>Vârstă:</label>
+        <input type="number" th:field="*{varsta}" required/>
+    </div>
+
+    <div>
+        <label>Poziție:</label>
+        <input type="text" th:field="*{pozitie}" required/>
+    </div>
+
+    <div>
+        <label>Goluri:</label>
+        <input type="number" th:field="*{goal}" value="0"/>
+    </div>
+
+    <div>
+        <label>Assist:</label>
+        <input type="number" th:field="*{asist}" value="0"/>
+    </div>
+
+    <div>
+        <label>Salvări:</label>
+        <input type="number" th:field="*{salvari}" value="0"/>
+    </div>
+
+    <div>
+        <label>Picior (drept/stâng):</label>
+        <input type="text" th:field="*{picior}" />
+    </div>
+
+    <div style="margin-top: 10px;">
+        <button type="submit">Salvează</button>
+        <a th:href="@{/players}">Anulează</a>
+    </div>
+</form>
+
+</body>
+</html>

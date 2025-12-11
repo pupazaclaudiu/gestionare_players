@@ -24,10 +24,10 @@ public class Player {
 
     //statistici
     @Column(name = "goal")
-    private Integer goluri;
+    private Integer goal;
 
     @Column(name = "asist")
-    private Integer asisturi;
+    private Integer asist;
 
     private Integer salvari;
 

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+  <meta charset="UTF-8">
+  <title>Lista jucători</title>
+</head>
+<body>
+
+<h2>
+  Bine ai venit,
+  <span sec:authentication="name">utilizator</span>
+</h2>
+
+<!-- Formular de filtrare -->
+<form th:action="@{/players}" method="get">
+  <input type="text" name="echipa" placeholder="echipă"
+         th:value="${echipa}" />
+  <input type="text" name="pozitie" placeholder="poziție"
+         th:value="${pozitie}" />
+  <input type="text" name="picior" placeholder="picior (drept/stâng)"
+         th:value="${picior}" />
+  <input type="number" name="varsta" placeholder="vârstă"
+         th:value="${varsta}" />
+  <button type="submit">Filtrează</button>
+  <a th:href="@{/players}">Resetează filtrele</a>
+</form>
+
+<h3>Toți jucătorii</h3>
+
+<table border="1" cellpadding="5" cellspacing="0">
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>Nume</th>
+    <th>Prenume</th>
+    <th>Echipă</th>
+    <th>Vârstă</th>
+    <th>Poziție</th>
+    <th>Goluri</th>
+    <th>Assist</th>
+    <th>Salvări</th>
+    <th>Picior</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="p : ${players}">
+    <td th:text="${p.id}"></td>
+    <td th:text="${p.nume}"></td>
+    <td th:text="${p.prenume}"></td>
+    <td th:text="${p.echipa}"></td>
+    <td th:text="${p.varsta}"></td>
+    <td th:text="${p.pozitie}"></td>
+    <td th:text="${p.goal}"></td>
+    <td th:text="${p.asist}"></td>
+    <td th:text="${p.salvari}"></td>
+    <td th:text="${p.picior}"></td>
+  </tr>
+  </tbody>
+</table>
+
+<div sec:authorize="hasRole('ADMIN')">
+  <form th:action="@{/admin/players/new}" method="get" style="margin-bottom: 15px;">
+    <button type="submit">Adaugă jucător</button>
+  </form>
+</div>
+
+
+<p>
+  <a th:href="@{/logout}">Logout</a>
+</p>
+
+</body>
+</html>

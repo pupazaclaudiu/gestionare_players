@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Register</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+<h2>Înregistrare</h2>
+
+<div th:if="${error}">
+    <p style="color:red;" th:text="${error}"></p>
+</div>
+
+<form th:action="@{/register}" th:object="${registerDto}" method="post">
+    <div>
+        <label>Email:</label>
+        <input type="email" th:field="*{email}" />
+    </div>
+    <div>
+        <label>Parola:</label>
+        <input type="password" th:field="*{parola}" />
+    </div>
+    <div>
+        <label>Confirmă parola:</label>
+        <input type="password" th:field="*{confirmParola}" />
+    </div>
+    <div>
+        <button type="submit">Creează cont</button>
+    </div>
+</form>
+
+<p>Ai deja cont? <a th:href="@{/login}">Loghează-te</a></p>
+
+</body>
+</html>

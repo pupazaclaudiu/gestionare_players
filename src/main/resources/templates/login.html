@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Login</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+<h2>Login</h2>
+
+<div th:if="${param.error}">
+    <p style="color:red;">Email sau parolă greșită.</p>
+</div>
+
+<div th:if="${param.logout}">
+    <p style="color:green;">Te-ai delogat cu succes.</p>
+</div>
+
+<div th:if="${param.registered}">
+    <p style="color:green;">Cont creat cu succes! Te poți loga acum.</p>
+</div>
+
+<form th:action="@{/login}" method="post">
+    <div>
+        <label>Email:</label>
+        <input type="text" name="username"/> <!-- Spring așteaptă 'username' -->
+    </div>
+    <div>
+        <label>Parola:</label>
+        <input type="password" name="password"/>
+    </div>
+    <div>
+        <button type="submit">Login</button>
+    </div>
+</form>
+
+<p>Nu ai cont? <a th:href="@{/register}">Înregistrează-te</a></p>
+
+</body>
+</html>
