@@ -4,71 +4,482 @@
 <head>
   <meta charset="UTF-8">
   <title>Lista jucători</title>
+
+  <!-- Fonturi opționale (ca în design-ul frumos) -->
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* =========================
+       THEME & RESET
+       ========================= */
+    :root {
+        --grass-dark: #0d3b24;
+        --grass-medium: #145231;
+        --grass-light: #1f6c3f;
+
+        --gold: #ffd700;
+        --gold-dark: #c9a227;
+
+        --white: #ffffff;
+        --gray-100: #f8f9fa;
+        --gray-300: #dee2e6;
+        --gray-500: #adb5bd;
+        --gray-700: #495057;
+
+        --shadow-lg: 0 12px 30px rgba(0, 0, 0, 0.4);
+        --radius-lg: 20px;
+        --radius-md: 12px;
+        --transition: 0.25s ease;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        min-height: 100vh;
+        font-family: 'Montserrat', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        background: radial-gradient(circle at top, #1d7a4b 0%, #0b2416 55%, #04120a 100%);
+        color: var(--white);
+    }
+
+    a {
+        color: var(--gold);
+        text-decoration: none;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+
+    /* =========================
+       LAYOUT
+       ========================= */
+    .page-wrapper {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 30px 15px 40px;
+    }
+
+    .page-header {
+        margin-bottom: 25px;
+        text-align: center;
+    }
+
+    .page-header h1 {
+        font-family: 'Bebas Neue', cursive;
+        font-size: 42px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+    }
+
+    .page-header h1 span {
+        color: var(--gold);
+    }
+
+    .page-header p {
+        margin-top: 8px;
+        color: var(--gray-300);
+        font-size: 14px;
+    }
+
+    .welcome-line {
+        margin-top: 15px;
+        font-weight: 500;
+    }
+
+    .welcome-line span {
+        color: var(--gold);
+    }
+
+    /* =========================
+       CARDS
+       ========================= */
+    .card {
+        background: linear-gradient(145deg, rgba(27, 81, 50, 0.96), rgba(11, 45, 28, 0.98));
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-lg);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        padding: 22px 24px;
+        margin-bottom: 25px;
+    }
+
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+    }
+
+    .card-title {
+        font-weight: 700;
+        font-size: 18px;
+        color: var(--gold);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .card-title span.icon {
+        font-size: 20px;
+    }
+
+    .card-subtitle {
+        font-size: 13px;
+        color: var(--gray-500);
+    }
+
+    /* =========================
+       FILTER FORM
+       ========================= */
+    .filter-form {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 12px 18px;
+        align-items: flex-end;
+    }
+
+    .filter-group label {
+        display: block;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: var(--gray-300);
+        margin-bottom: 5px;
+    }
+
+    .filter-group input[type="text"],
+    .filter-group input[type="number"] {
+        width: 100%;
+        padding: 10px 12px;
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        background: rgba(0, 0, 0, 0.25);
+        color: var(--white);
+        font-size: 14px;
+    }
+
+    .filter-group input::placeholder {
+        color: var(--gray-500);
+    }
+
+    .filter-group input:focus {
+        outline: none;
+        border-color: var(--gold);
+        box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.25);
+    }
+
+    .filter-actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .btn {
+        border: none;
+        border-radius: 999px;
+        padding: 10px 18px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        font-family: inherit;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition: var(--transition);
+        text-decoration: none;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+        color: #4a3b00;
+        box-shadow: 0 6px 18px rgba(255, 215, 0, 0.35);
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 24px rgba(255, 215, 0, 0.5);
+    }
+
+    .btn-secondary {
+        background: rgba(255, 255, 255, 0.08);
+        color: var(--gray-100);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-secondary:hover {
+        background: rgba(255, 255, 255, 0.18);
+    }
+
+    /* =========================
+       TABLE
+       ========================= */
+    .table-wrapper {
+        margin-top: 10px;
+        border-radius: var(--radius-md);
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+    }
+
+    thead {
+        background: rgba(0, 0, 0, 0.45);
+    }
+
+    th, td {
+        padding: 10px 12px;
+        text-align: left;
+    }
+
+    th {
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        color: var(--gold);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    tbody tr {
+        background: rgba(0, 0, 0, 0.18);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        transition: background var(--transition);
+    }
+
+    tbody tr:nth-child(even) {
+        background: rgba(0, 0, 0, 0.28);
+    }
+
+    tbody tr:hover {
+        background: rgba(255, 255, 255, 0.08);
+    }
+
+    td {
+        color: var(--gray-100);
+    }
+
+    .cell-id {
+        font-weight: 700;
+        color: var(--gold);
+    }
+
+    .badge-team {
+        display: inline-block;
+        padding: 4px 10px;
+        border-radius: 999px;
+        background: rgba(30, 144, 255, 0.25);
+        color: #9bd0ff;
+        font-size: 12px;
+        font-weight: 500;
+    }
+
+    .badge-position {
+        display: inline-block;
+        padding: 4px 10px;
+        border-radius: 999px;
+        background: rgba(30, 144, 255, 0.25);
+        color: #9bd0ff;
+        font-size: 12px;
+        font-weight: 500;
+    }
+
+    .badge-atacant { background: rgba(220, 53, 69, 0.3); color: #ff8594; }
+    .badge-mijlocaș { background: rgba(40, 167, 69, 0.3); color: #8de6ae; }
+    .badge-fundaș { background: rgba(30, 144, 255, 0.3); color: #9bd0ff; }
+    .badge-portar { background: rgba(255, 193, 7, 0.3); color: #ffe082; }
+
+    .cell-stat {
+        text-align: center;
+        font-weight: 600;
+    }
+
+    .cell-goals { color: #ff6b7a; }
+    .cell-assists { color: #7fc9ff; }
+    .cell-saves { color: #ffd54f; }
+
+    /* =========================
+       BOTTOM AREA
+       ========================= */
+    .bottom-bar {
+        margin-top: 14px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 13px;
+        color: var(--gray-300);
+    }
+
+    .logout-link a {
+        color: var(--gray-100);
+        font-weight: 500;
+    }
+
+    .logout-link a:hover {
+        color: var(--gold);
+    }
+
+    /* =========================
+       RESPONSIVE
+       ========================= */
+    @media (max-width: 768px) {
+        .card {
+            padding: 18px 16px;
+            border-radius: 16px;
+        }
+
+        th, td {
+            padding: 8px 8px;
+        }
+
+        .page-header h1 {
+            font-size: 32px;
+        }
+    }
+  </style>
 </head>
 <body>
+<div class="page-wrapper">
 
-<h2>
-  Bine ai venit,
-  <span sec:authentication="name">utilizator</span>
-</h2>
+  <!-- TITLU + BUN VENIT -->
+  <header class="page-header">
+    <h1>Lista <span>Jucătorilor</span></h1>
+    <p>Vezi și filtrează jucătorii din baza de date.</p>
 
-<!-- Formular de filtrare -->
-<form th:action="@{/players}" method="get">
-  <input type="text" name="echipa" placeholder="echipă"
-         th:value="${echipa}" />
-  <input type="text" name="pozitie" placeholder="poziție"
-         th:value="${pozitie}" />
-  <input type="text" name="picior" placeholder="picior (drept/stâng)"
-         th:value="${picior}" />
-  <input type="number" name="varsta" placeholder="vârstă"
-         th:value="${varsta}" />
-  <button type="submit">Filtrează</button>
-  <a th:href="@{/players}">Resetează filtrele</a>
-</form>
+    <p class="welcome-line">
+      Bine ai venit,
+      <span sec:authentication="name">utilizator</span>
+    </p>
+  </header>
 
-<h3>Toți jucătorii</h3>
+  <!-- CARD FILTRE -->
+  <section class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-title">
+          <span class="icon">🔍</span>
+          Filtrare jucători
+        </div>
+        <div class="card-subtitle">Filtrează după echipă, poziție, picior și vârstă.</div>
+      </div>
+    </div>
 
-<table border="1" cellpadding="5" cellspacing="0">
-  <thead>
-  <tr>
-    <th>ID</th>
-    <th>Nume</th>
-    <th>Prenume</th>
-    <th>Echipă</th>
-    <th>Vârstă</th>
-    <th>Poziție</th>
-    <th>Goluri</th>
-    <th>Assist</th>
-    <th>Salvări</th>
-    <th>Picior</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr th:each="p : ${players}">
-    <td th:text="${p.id}"></td>
-    <td th:text="${p.nume}"></td>
-    <td th:text="${p.prenume}"></td>
-    <td th:text="${p.echipa}"></td>
-    <td th:text="${p.varsta}"></td>
-    <td th:text="${p.pozitie}"></td>
-    <td th:text="${p.goal}"></td>
-    <td th:text="${p.asist}"></td>
-    <td th:text="${p.salvari}"></td>
-    <td th:text="${p.picior}"></td>
-  </tr>
-  </tbody>
-</table>
+    <form th:action="@{/players}" method="get" class="filter-form">
+      <div class="filter-group">
+        <label for="echipa">Echipă</label>
+        <input id="echipa" type="text" name="echipa" placeholder="ex: Real Madrid"
+               th:value="${echipa}">
+      </div>
 
-<div sec:authorize="hasRole('ADMIN')">
-  <form th:action="@{/admin/players/new}" method="get" style="margin-bottom: 15px;">
-    <button type="submit">Adaugă jucător</button>
-  </form>
+      <div class="filter-group">
+        <label for="pozitie">Poziție</label>
+        <input id="pozitie" type="text" name="pozitie" placeholder="ex: Atacant"
+               th:value="${pozitie}">
+      </div>
+
+      <div class="filter-group">
+        <label for="picior">Picior</label>
+        <input id="picior" type="text" name="picior" placeholder="drept / stâng"
+               th:value="${picior}">
+      </div>
+
+      <div class="filter-group">
+        <label for="varsta">Vârstă</label>
+        <input id="varsta" type="number" name="varsta" placeholder="ex: 30"
+               th:value="${varsta}">
+      </div>
+
+      <div class="filter-actions">
+        <button type="submit" class="btn btn-primary">
+          🔍 Filtrează
+        </button>
+        <a th:href="@{/players}" class="btn btn-secondary">
+          ↺ Resetează filtrele
+        </a>
+      </div>
+    </form>
+  </section>
+
+  <!-- CARD TABEL -->
+  <section class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-title">
+          <span class="icon">📋</span>
+          Lista jucătorilor
+        </div>
+        <div class="card-subtitle">
+          <span th:text="${#lists.size(players)}">0</span> jucători găsiți
+        </div>
+      </div>
+
+      <div sec:authorize="hasRole('ADMIN')">
+        <form th:action="@{/admin/players/new}" method="get">
+          <button type="submit" class="btn btn-primary">➕ Adaugă jucător</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nume</th>
+          <th>Prenume</th>
+          <th>Echipă</th>
+          <th>Vârstă</th>
+          <th>Poziție</th>
+          <th>Goluri</th>
+          <th>Assist</th>
+          <th>Salvări</th>
+          <th>Picior</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="p : ${players}">
+          <td class="cell-id" th:text="${p.id}">1</td>
+          <td th:text="${p.nume}">Nume</td>
+          <td th:text="${p.prenume}">Prenume</td>
+          <td>
+            <span class="badge-team" th:text="${p.echipa}">Echipă</span>
+          </td>
+          <td th:text="${p.varsta}">30</td>
+          <td>
+            <span class="badge-position" th:text="${p.pozitie}">Poziție</span>
+          </td>
+          <td class="cell-stat cell-goals" th:text="${p.goal}">0</td>
+          <td class="cell-stat cell-assists" th:text="${p.asist}">0</td>
+          <td class="cell-stat cell-saves" th:text="${p.salvari}">0</td>
+          <td th:text="${p.picior}">drept</td>
+        </tr>
+
+        <tr th:if="${#lists.isEmpty(players)}">
+          <td colspan="10" style="text-align:center; padding:25px; color:var(--gray-300);">
+            Nu au fost găsiți jucători pentru filtrele selectate.
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="bottom-bar">
+      <div>📊 Total jucători: <strong th:text="${#lists.size(players)}">0</strong></div>
+      <div class="logout-link">
+        <a th:href="@{/logout}">Logout</a>
+      </div>
+    </div>
+  </section>
+
 </div>
-
-
-<p>
-  <a th:href="@{/logout}">Logout</a>
-</p>
-
 </body>
 </html>

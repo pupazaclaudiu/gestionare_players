@@ -35,7 +35,7 @@ public class DataLoader implements CommandLineRunner {
 
             Utilizator user1 = new Utilizator();
             user1.setEmail("victor@gmail.com");
-            user1.setParola(passwordEncoder.encode("parola123")); // parola in clar: parola123
+            user1.setParola(passwordEncoder.encode("parola123"));
 
             Utilizator user2 = new Utilizator();
             user2.setEmail("claudiu@gmail.com");

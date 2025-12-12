@@ -3,65 +3,280 @@
 <head>
     <meta charset="UTF-8">
     <title>Adaugă jucător</title>
+
+    <!-- fonturi ca pe pagina principală -->
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --grass-dark: #0d3b24;
+            --grass-medium: #145231;
+            --grass-light: #1f6c3f;
+
+            --gold: #ffd700;
+            --gold-dark: #c9a227;
+
+            --white: #ffffff;
+            --gray-100: #f8f9fa;
+            --gray-300: #dee2e6;
+            --gray-500: #adb5bd;
+
+            --shadow-lg: 0 12px 30px rgba(0, 0, 0, 0.4);
+            --radius-lg: 22px;
+            --radius-md: 12px;
+            --transition: 0.25s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: 'Montserrat', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: radial-gradient(circle at top, #1d7a4b 0%, #0b2416 55%, #04120a 100%);
+            color: var(--white);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        a {
+            color: var(--gold);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .page-wrapper {
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .card {
+            background: linear-gradient(145deg, rgba(27, 81, 50, 0.96), rgba(11, 45, 28, 0.98));
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 26px 26px 22px;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        .card-title {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 30px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .card-title span {
+            color: var(--gold);
+        }
+
+        .card-subtitle {
+            font-size: 13px;
+            color: var(--gray-500);
+        }
+
+        .back-link {
+            font-size: 13px;
+            color: var(--gray-100);
+        }
+
+        .back-link a {
+            color: var(--gray-100);
+        }
+
+        .back-link a:hover {
+            color: var(--gold);
+        }
+
+        form {
+            margin-top: 10px;
+        }
+
+        .form-row {
+            margin-bottom: 14px;
+        }
+
+        label {
+            display: block;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+            color: var(--gray-300);
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: var(--radius-md);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            background: rgba(0, 0, 0, 0.25);
+            color: var(--white);
+            font-size: 14px;
+        }
+
+        input::placeholder {
+            color: var(--gray-500);
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.25);
+        }
+
+        .form-row-inline {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px 14px;
+        }
+
+        .form-actions {
+            margin-top: 18px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .btn {
+            border: none;
+            border-radius: 999px;
+            padding: 10px 18px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: var(--transition);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: #4a3b00;
+            box-shadow: 0 6px 18px rgba(255, 215, 0, 0.35);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 24px rgba(255, 215, 0, 0.5);
+        }
+
+        .btn-secondary-link {
+            font-size: 14px;
+        }
+
+        @media (max-width: 600px) {
+            .card {
+                padding: 20px 18px 18px;
+                border-radius: 18px;
+            }
+
+            .card-title {
+                font-size: 26px;
+            }
+
+            .form-row-inline {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
+<div class="page-wrapper">
+    <div class="card">
+        <div class="card-header">
+            <div>
+                <div class="card-title">
+                    ➕ <span>Adaugă jucător</span>
+                </div>
+                <div class="card-subtitle">
+                    Completează detaliile jucătorului și salvează în baza de date.
+                </div>
+            </div>
+            <div class="back-link">
+                <a th:href="@{/players}">⟵ Înapoi la listă</a>
+            </div>
+        </div>
 
-<h2>Adaugă jucător nou</h2>
+        <form th:action="@{/admin/players/save}"
+              th:object="${player}"
+              method="post">
 
-<form th:action="@{/admin/players/save}"
-      th:object="${player}"
-      method="post">
+            <div class="form-row">
+                <label for="nume">Nume *</label>
+                <input id="nume" type="text" th:field="*{nume}" required placeholder="ex: Ronaldo"/>
+            </div>
 
-    <div>
-        <label>Nume:</label>
-        <input type="text" th:field="*{nume}" required/>
+            <div class="form-row">
+                <label for="prenume">Prenume *</label>
+                <input id="prenume" type="text" th:field="*{prenume}" required placeholder="ex: Cristiano"/>
+            </div>
+
+            <div class="form-row">
+                <label for="echipa">Echipă *</label>
+                <input id="echipa" type="text" th:field="*{echipa}" required placeholder="ex: Real Madrid"/>
+            </div>
+
+            <div class="form-row form-row-inline">
+                <div>
+                    <label for="varsta">Vârstă *</label>
+                    <input id="varsta" type="number" th:field="*{varsta}" required min="10" max="50"/>
+                </div>
+                <div>
+                    <label for="pozitie">Poziție *</label>
+                    <input id="pozitie" type="text" th:field="*{pozitie}" required placeholder="ex: Atacant"/>
+                </div>
+            </div>
+
+            <div class="form-row form-row-inline">
+                <div>
+                    <label for="goal">Goluri</label>
+                    <input id="goal" type="number" th:field="*{goal}" value="0" min="0"/>
+                </div>
+                <div>
+                    <label for="asist">Assist</label>
+                    <input id="asist" type="number" th:field="*{asist}" value="0" min="0"/>
+                </div>
+            </div>
+
+            <div class="form-row form-row-inline">
+                <div>
+                    <label for="salvari">Salvări</label>
+                    <input id="salvari" type="number" th:field="*{salvari}" value="0" min="0"/>
+                </div>
+                <div>
+                    <label for="picior">Picior (drept/stâng)</label>
+                    <input id="picior" type="text" th:field="*{picior}" placeholder="ex: drept"/>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">
+                    💾 Salvează
+                </button>
+                <span class="btn-secondary-link">
+                    sau <a th:href="@{/players}">Anulează</a>
+                </span>
+            </div>
+        </form>
     </div>
-
-    <div>
-        <label>Prenume:</label>
-        <input type="text" th:field="*{prenume}" required/>
-    </div>
-
-    <div>
-        <label>Echipă:</label>
-        <input type="text" th:field="*{echipa}" required/>
-    </div>
-
-    <div>
-        <label>Vârstă:</label>
-        <input type="number" th:field="*{varsta}" required/>
-    </div>
-
-    <div>
-        <label>Poziție:</label>
-        <input type="text" th:field="*{pozitie}" required/>
-    </div>
-
-    <div>
-        <label>Goluri:</label>
-        <input type="number" th:field="*{goal}" value="0"/>
-    </div>
-
-    <div>
-        <label>Assist:</label>
-        <input type="number" th:field="*{asist}" value="0"/>
-    </div>
-
-    <div>
-        <label>Salvări:</label>
-        <input type="number" th:field="*{salvari}" value="0"/>
-    </div>
-
-    <div>
-        <label>Picior (drept/stâng):</label>
-        <input type="text" th:field="*{picior}" />
-    </div>
-
-    <div style="margin-top: 10px;">
-        <button type="submit">Salvează</button>
-        <a th:href="@{/players}">Anulează</a>
-    </div>
-</form>
-
+</div>
 </body>
 </html>
