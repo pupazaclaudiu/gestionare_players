@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="ro"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Statistici jucători</title>
+
+    <!-- Fonturi -->
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;500;600;700&display=swap"
+          rel="stylesheet"/>
+
+    <style>
+        :root {
+            --grass-dark: #0d3b24;
+            --grass-medium: #145231;
+            --grass-light: #1f6c3f;
+
+            --gold: #ffd700;
+            --gold-dark: #c9a227;
+
+            --white: #ffffff;
+            --gray-100: #f8f9fa;
+            --gray-300: #dee2e6;
+            --gray-500: #adb5bd;
+            --gray-700: #495057;
+
+            --shadow-lg: 0 12px 30px rgba(0, 0, 0, 0.4);
+            --radius-lg: 20px;
+            --radius-md: 12px;
+            --transition: 0.25s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: 'Montserrat', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: radial-gradient(circle at top, #1d7a4b 0%, #0b2416 55%, #04120a 100%);
+            color: var(--white);
+        }
+
+        a {
+            color: var(--gold);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Layout general */
+        .page-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 15px 40px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header sus (similar cu players) */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-ball {
+            font-size: 26px;
+        }
+
+        .logo-text {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 30px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .logo-text span {
+            color: var(--gold);
+        }
+
+        .top-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+        }
+
+        .user-name {
+            font-weight: 600;
+        }
+
+        .btn-link {
+            padding: 8px 14px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            background: rgba(0, 0, 0, 0.25);
+            color: var(--gray-100);
+            font-size: 13px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .btn-link:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        /* Header pagina */
+        .page-header {
+            text-align: center;
+            margin-bottom: 22px;
+        }
+
+        .page-header h1 {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 40px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .page-header h1 span {
+            color: var(--gold);
+        }
+
+        .page-header p {
+            margin-top: 8px;
+            color: var(--gray-300);
+            font-size: 14px;
+        }
+
+        /* Cardul cu raportul Power BI */
+        .card {
+            background: linear-gradient(145deg, rgba(27, 81, 50, 0.96), rgba(11, 45, 28, 0.98));
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 22px 24px;
+            margin-bottom: 25px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .card-title {
+            font-weight: 700;
+            font-size: 18px;
+            color: var(--gold);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card-title span.icon {
+            font-size: 20px;
+        }
+
+        .card-subtitle {
+            font-size: 13px;
+            color: var(--gray-500);
+        }
+
+        .card-badges {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            font-size: 11px;
+            color: var(--gray-300);
+        }
+
+        .badge-pill {
+            padding: 4px 10px;
+            border-radius: 999px;
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .report-container {
+            margin-top: 5px;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            background: #000;
+        }
+
+        .report-container iframe {
+            width: 100%;
+            height: 650px;
+            border: none;
+        }
+
+        .info-text {
+            font-size: 13px;
+            color: var(--gray-300);
+            margin-top: 8px;
+        }
+
+        /* Footer mic jos */
+        .page-footer {
+            margin-top: 18px;
+            text-align: center;
+            font-size: 12px;
+            color: var(--gray-500);
+        }
+
+        @media (max-width: 768px) {
+            .page-wrapper {
+                padding: 20px 12px 30px;
+            }
+
+            .report-container iframe {
+                height: 500px;
+            }
+
+            .page-header h1 {
+                font-size: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="page-wrapper">
+
+    <!-- Bara de sus -->
+    <div class="top-bar">
+        <div class="logo-section">
+            <span class="logo-ball">⚽</span>
+            <span class="logo-text">Football <span>Manager</span></span>
+        </div>
+        <div class="top-actions">
+            <span>Bine ai venit, <span class="user-name" sec:authentication="name">utilizator</span></span>
+            <a th:href="@{/players}" class="btn-link">
+                ← Înapoi la jucători
+            </a>
+        </div>
+    </div>
+
+    <!-- Titlu pagină -->
+    <header class="page-header">
+        <h1>Statistici <span>Jucători</span></h1>
+        <p>Dashboard interactiv generat în Power BI, conectat la baza de date a aplicației.</p>
+    </header>
+
+    <!-- Card cu raportul Power BI -->
+    <section class="card">
+        <div class="card-header">
+            <div>
+                <div class="card-title">
+                    <span class="icon">📊</span>
+                    Raport Power BI
+                </div>
+                <div class="card-subtitle">
+                    Vezi goluri, assisturi, salvări, distribuție pe echipe și poziții.
+                </div>
+            </div>
+            <div class="card-badges">
+                <span class="badge-pill">Live din MySQL</span>
+                <span class="badge-pill">Actualizare la refresh</span>
+            </div>
+        </div>
+
+        <div class="report-container">
+            <!-- ⚠️ Înlocuiește SRC cu link-ul tău de embed din Power BI -->
+            <iframe
+                    src="https://app.powerbi.com/view?r=INLOCUIESTE_CU_LINKUL_TAU"
+                    allowfullscreen="true">
+            </iframe>
+        </div>
+
+        <p class="info-text">
+            Dacă nu se afișează raportul, verifică:
+            - conexiunea la internet,
+            - drepturile de acces la raport în Power BI,
+            - sau dacă link-ul de embed este corect.
+        </p>
+    </section>
+
+    <footer class="page-footer">
+        © 2025 Football Manager System – Statistici jucători
+    </footer>
+
+</div>
+</body>
+</html>

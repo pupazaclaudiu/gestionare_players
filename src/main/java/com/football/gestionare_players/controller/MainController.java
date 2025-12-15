@@ -81,5 +81,12 @@ public class MainController {
         model.addAttribute("player", player);
         return "player-details"; // templates/player-details.html
     }
+    // Pagina de statistici (Power BI embed)
+    @GetMapping("/stats")
+    public String statsPage() {
+        // doar returnează numele template-ului stats.html
+        return "stats";
+    }
+
 }
 

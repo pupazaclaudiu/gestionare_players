@@ -116,6 +116,12 @@
         align-items: center;
         margin-bottom: 16px;
     }
+        .header-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
 
     .card-title {
         font-weight: 700;
@@ -421,11 +427,19 @@
           <span th:text="${#lists.size(players)}">0</span> jucători găsiți
         </div>
       </div>
+      <!-- Butoane din dreapta -->
+      <div class="header-actions">
+        <!-- VIZIBIL PENTRU TOȚI UTILIZATORII -->
+        <a th:href="@{/stats}" class="btn btn-secondary">
+          📊 Vezi statistici
+        </a>
 
-      <div sec:authorize="hasRole('ADMIN')">
-        <form th:action="@{/admin/players/new}" method="get">
-          <button type="submit" class="btn btn-primary">➕ Adaugă jucător</button>
-        </form>
+        <!-- Adăugare jucător – doar ADMIN -->
+        <div sec:authorize="hasRole('ADMIN')">
+          <form th:action="@{/admin/players/new}" method="get">
+            <button type="submit" class="btn btn-primary">➕ Adaugă jucător</button>
+          </form>
+        </div>
       </div>
     </div>
 
